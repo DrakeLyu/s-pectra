@@ -8,6 +8,8 @@ dnn.py：一个简单的神经网络质谱分类模型样例，可以尝试升�
 
 百度网盘里有一些资源：
  
+链接：https://pan.baidu.com/s/1Vz35PkyDxiXz85s22EeRLQ 提取码：vvat
+
 压缩包：质谱原始数据
 
 ProteoWard：格式转换软件，转换为mzml格式
