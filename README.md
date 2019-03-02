@@ -16,4 +16,4 @@ ProteoWard：格式转换软件，转换为mzml格式
 
 openMS：质谱数据读取软件，可以读取.mzml格式质谱数据
 
-目前的问题：在spectra的java程序里面调用嵌入ProteoWard
+目前的问题：在spectra的java程序里面嵌入或调用ProteoWard
