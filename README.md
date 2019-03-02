@@ -15,3 +15,5 @@ dnn.py：一个简单的神经网络质谱分类模型样例，可以尝试升�
 ProteoWard：格式转换软件，转换为mzml格式
 
 openMS：质谱数据读取软件，可以读取.mzml格式质谱数据
+
+目前的问题：在specrra的java程序里面调用嵌入ProteoWard
