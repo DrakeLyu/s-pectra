@@ -1,6 +1,7 @@
 "# s-pectra" 
 
 dnn.py：一个简单的神经网络质谱分类模型样例，可以尝试升级数据复杂度改变模型
+数据来源：https://sourceforge.net/p/cfm-id/code/HEAD/tree/supplementary_material/
 
 
 
