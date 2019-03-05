@@ -4,6 +4,8 @@ dnn.py：一个简单的神经网络质谱分类模型样例，可以尝试升�
 
 数据来源：https://sourceforge.net/p/cfm-id/code/HEAD/tree/supplementary_material/
 
+cfm-without0.py:数据处理脚本
+
 
 
 百度网盘里有一些资源：
