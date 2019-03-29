@@ -8,8 +8,6 @@ dnn.py：一个简单的神经网络质谱分类模型样例，可以尝试升�
 
 cfm-without0.py: 数据处理脚本
 
-
-
 百度网盘里有一些资源：
  
 链接：https://pan.baidu.com/s/1Vz35PkyDxiXz85s22EeRLQ 提取码：vvat
@@ -25,3 +23,9 @@ openMS：质谱数据读取软件，可以读取.mzml格式质谱数据
 参考资料：https://zhuanlan.zhihu.com/p/40783833
 
 https://blog.csdn.net/qq_15111861/article/details/85619948
+
+https://www.nature.com/articles/nbt930
+
+https://www.nature.com/articles/nmeth1113
+
+https://www.mcponline.org/content/5/3/497.full
