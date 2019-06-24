@@ -31,3 +31,5 @@ https://www.nature.com/articles/nmeth1113
 https://www.mcponline.org/content/5/3/497.full
 
 https://github.com/HUPO-PSI/mzML
+
+Detection and identification of 700 drugs by multi-target screening with a 3200 Q TRAP® LC-MS/MS system and library searching
