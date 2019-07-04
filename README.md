@@ -38,4 +38,5 @@ Machine Learning for SERS Quantitative Detection of Pyocyanin
 
 Raman spectroscopy for rapid and inexpensive diagnosis of echinococcosis using the adaptive iteratively reweighted penalized least squares-Kennard–stoneback propagation neural network
 
+Deep convolutional neural networks for Raman spectrum recognition: a unified solution
 基于光谱预处理结合遗传算法优化波长的 面粉水分快速检测
