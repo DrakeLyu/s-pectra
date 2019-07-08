@@ -4,12 +4,7 @@ Created on Mon Dec 10 21:39:04 2018
 
 @author: NathanDrake
 """
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 10 21:39:04 2018
 
-@author: NathanDrake
-"""
 import re,math
 import numpy as np
 
