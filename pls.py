@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 10 21:39:04 2018
-
-@author: NathanDrake
-"""
-
 import re,math
 import numpy as np
 
@@ -29,6 +22,8 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 from keras.optimizers import Adam
 from sklearn.multioutput import MultiOutputRegressor
+
+
 def load_data():
     items = ["nap","pyr","phe"]
     y = {item:[] for item in items}
@@ -61,10 +56,16 @@ def Partial_Least_Squares(x,y):
     rmsec = []
     rmsep = []
     rmsecv = []
+    Y = []
+    for j in range(300):
+        m = []
+        for i in ["nap","pyr","phe"]:
+            m.append( y[i][j])
+        Y.append(m)
 
     #for i in ["nap","pyr","phe"]:
     if True:        
-        x_train, x_test, y_train, y_test = train_test_split( x, y, test_size=0.1, random_state=4 )
+        x_train, x_test, y_train, y_test = train_test_split( scale(x), Y, test_size=0.1, random_state=4 )
         x_train = np.array(x_train)
         x_test = np.array(x_test)
         y_train = np.array(y_train)
@@ -83,21 +84,41 @@ def Partial_Least_Squares(x,y):
             
         # j=5: rmse: 2.45 1.15 2.15
         pls = MultiOutputRegressor(PLSRegression(n_components=5))
-        pls.fit(scale(x_train), y_train)
+        pls.fit(x_train, y_train)
 
-        pred = pls.predict(scale(x_test) )       
-        mse0 = mean_squared_error(y_test, pred)
-        rmsep.append(math.sqrt(mse0))
-        
-        pred1 = pls.predict(scale(x_train)  )
-        mse1 = mean_squared_error(y_train, pred1)
-        rmsec.append(math.sqrt(mse1))
+####        pred = pls.predict(scale(x_test) )       
+####        mse0 = mean_squared_error(y_test, pred)
+####        rmsep.append(math.sqrt(mse0))
+####        
+####        pred1 = pls.predict(scale(x_train)  )
+####        mse1 = mean_squared_error(y_train, pred1)
+####        rmsec.append(math.sqrt(mse1))
+####
+####        score = -1*model_selection.cross_val_score(pls, x_train, y_train.ravel(), cv=kf_10, scoring='neg_mean_squared_error').mean()    
+####        rmsecv.append(math.sqrt(score))
 
-        score = -1*model_selection.cross_val_score(pls, x_train, y_train.ravel(), cv=kf_10, scoring='neg_mean_squared_error').mean()    
-        rmsecv.append(math.sqrt(score))
-                      
+        pred0 = pls.predict(x_train )        
+        pred = pls.predict(x_test)
+
+        for i in range(len(y_test)):
+            for j in range(0,3):
+                if pred[0][i][j] <2:
+                    pred[0][i][j] = 0
+        for i in range(len(y_test)):
+            print(y_test[i],pred[0][i])
+        for i in range(0,3):
+
+            mse0 = mean_squared_error(y_test[:,i], pred[0,:,i])
+            rmsep.append(math.sqrt(mse0))
+
+            
+        for i in range(0,3):
+               
+            mse1 = mean_squared_error(y_train[:,i], pred0[0,:,i])
+            rmsec.append(math.sqrt(mse1))
+            
     print("rmsec",rmsec)
-    print("rmsecv",rmsecv)
+    #print("rmsecv",rmsecv)
     print("rmsep",rmsep)
 ##rmsec [1.797274515117025, 0.9091525234438878, 1.6283716396300185]
 ##rmsecv [2.44657116400538, 1.1688601755591697, 2.1456749315348964]
@@ -157,11 +178,16 @@ def PCA_SVR(x,y):
     rmsec = []
     rmsep = []
     rmsecv = []
-    for i in ["nap","pyr","phe"]:
-
+    Y = []
+    for j in range(300):
+        m = []
+        for i in ["nap","pyr","phe"]:
+            m.append( y[i][j])
+        Y.append(m)
+    if True:
         # Scale the data
         x_reduced = pca2.fit_transform(scale(x))        
-        x_train, x_test, y_train, y_test = train_test_split( x_reduced, y[i], test_size=0.1, random_state=4 )
+        x_train, x_test, y_train, y_test = train_test_split( x_reduced, Y, test_size=0.1, random_state=4 )
         x_train = np.array(x_train)
         x_test = np.array(x_test)
         y_train = np.array(y_train)
@@ -169,19 +195,32 @@ def PCA_SVR(x,y):
 
         n =300
 
-        svr = SVR(kernel='rbf',gamma='scale', C=1, epsilon=0.2)
+        svr = MultiOutputRegressor(SVR(kernel='rbf',gamma='scale', C=1, epsilon=0.2))
         svr.fit(x_train[:,:n], y_train)
         
-        pred = svr.predict(x_test[:,:n])        
-        mse0 = mean_squared_error(y_test, pred)
-        rmsep.append(math.sqrt(mse0))
-        
-        pred1 = svr.predict(x_train[:,:n])        
-        mse1 = mean_squared_error(y_train, pred1)
-        rmsec.append(math.sqrt(mse1))
+        pred0 = svr.predict(x_train[:,:n] )        
+        pred = svr.predict(x_test[:,:n])
+        print(pred)
+        for i in range(len(pred)):
+            for j in range(0,3):
+                if pred[i][j] < 2:
+                    pred[i][j] = 0
 
-        score = -1*model_selection.cross_val_score(svr, x_train[:,:n], y_train.ravel(), cv=kf_10, scoring='neg_mean_squared_error').mean()    
-        rmsecv.append(math.sqrt(score))
+        for i in range(len(y_test)):
+            print(y_test[i],pred[i])
+            
+        for i in range(0,3):
+            mse0 = mean_squared_error(y_test[:,i], pred[:,i])
+            rmsep.append(math.sqrt(mse0))
+
+            
+        for i in range(0,3):
+            mse1 = mean_squared_error(y_train[:,i], pred0[:,i])
+            rmsec.append(math.sqrt(mse1))
+            
+    print("rmsec",rmsec)
+    #print("rmsecv",rmsecv)
+    print("rmsep",rmsep)
 
         # Calculate MSE using CV for the 19 principle components, adding one component at the time.
 
@@ -197,9 +236,7 @@ def PCA_SVR(x,y):
 ##        plt.xlim(xmin=-1)
 ##        plt.show()
         
-    print("rmsec",rmsec)
-    print("rmsecv",rmsecv)
-    print("rmsep",rmsep)
+
 
 ##rmsec [2.243769480029148, 1.1062405845703978, 1.8390116321584529]
 ##rmsecv [2.8801699992822853, 1.5907525689713935, 2.4536471382399325]
@@ -415,6 +452,6 @@ kf_10 = model_selection.KFold(n_splits=10, shuffle=True, random_state=1)
 #Partial_Least_Squares(x,y)
 #Principal_Components_Regression(x,y)
 #Support_Vector_Regression(x,y)
-#PCA_SVR(x,y)
+PCA_SVR(x,y)
 #ANN(x,y)
-CNN(x,y)
+#CNN(x,y)
