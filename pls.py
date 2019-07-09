@@ -50,6 +50,50 @@ def load_data():
         
     return x,y
 
+def ga():
+    Y = []
+    x,y = load_data()
+    for j in range(300):
+        m = []
+        for i in ["nap","pyr","phe"]:
+            m.append( y[i][j])
+        Y.append(m)
+    if True:    
+        x_train, x_test, y_train, y_test = train_test_split( scale(x), Y, test_size=0.1, random_state=4 )
+        x_train = np.array(x_train)
+        x_test = np.array(x_test)
+        y_train = np.array(y_train)
+        y_test = np.array(y_test)
+
+    ##etimator = LinearRegression()
+    estimator = MultiOutputRegressor(SVR(kernel='rbf',gamma='scale', C=1, epsilon=0.2))
+
+    selector = GeneticSelectionCV(estimator,
+                                  cv=5,
+                                  verbose=1,
+                                  scoring="accuracy",
+                                  max_features=5,
+                                  n_population=100,
+                                  crossover_proba=0.5,
+                                  mutation_proba=0.2,
+                                  n_generations=100,
+                                  crossover_independent_proba=0.5,
+                                  mutation_independent_proba=0.05,
+                                  tournament_size=3,
+                                  n_gen_no_change=10,
+                                  caching=True,
+                                  n_jobs=-1)
+    selector = estimator.fit(x_train,y_train[:,0])
+
+    print(selector.support_)
+
+    x_reduced = []
+    for j in range(len(X)):
+        row = []
+        for i in range(len(selector.support_)):
+            if selector.support_[i] ==True:
+                row.append(X[j][i])
+        x_reduced.append(row)
 
 
 def Partial_Least_Squares(x,y):
