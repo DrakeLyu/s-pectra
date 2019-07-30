@@ -40,8 +40,10 @@ def load_data():
     y = []
     x =[]
     num_label = 20
-    file = open("D:/spectra/nn/x_mix.csv", 'r',newline='')    
-    file2 = open("D:/spectra/nn/y_mix.csv", 'r',newline='')
+    path1 = os.path.dirname(os.path.realpath(__file__)) + "/x_mix.csv"
+    path2 = os.path.dirname(os.path.realpath(__file__)) + "/y_mix.csv"
+    file = open(path1, 'r',newline='')    
+    file2 = open(path2, 'r',newline='')
 
     for line in file:
         data = re.split(',',line)
